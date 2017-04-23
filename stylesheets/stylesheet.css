@@ -1288,6 +1288,10 @@ a#magic-window {
 	transform-origin: center top;
 }
 
+.vr-active .fmb-button {
+	display: none;
+}
+
 @keyframes fadeIn {
 	0% {
 		transform: translateX(100vw);
