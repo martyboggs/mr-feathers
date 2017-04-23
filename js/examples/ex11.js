@@ -497,9 +497,9 @@ function Store(target) {
 			}
 			sound.play('rod');
 		} else if (e.target.className.indexOf('close') !== -1) {
+			store = null;
 			document.removeEventListener('click', storeHandler);
 			target.removeChild(document.getElementById('store'));
-			store = null;
 		}
 	}
 }
