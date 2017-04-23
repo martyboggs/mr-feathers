@@ -131,7 +131,6 @@ function bluetoothHandler(e) {
 		daydreamController.connect();
 		daydreamController.onStateChange(function (state) {
 			daydreamState = state;
-			console.log(daydreamState);
 		});
 	}
 }
@@ -862,7 +861,8 @@ function render(timestamp) {
 	}
 	bird.userData.lastY = bird.position.y;
 
-	if (keyboard.pressed('j') || fmb.clicking.J) {
+	if (keyboard.pressed('j') || fmb.clicking.J || daydreamState.isClickDown) {
+		console.log(daydreamState.xOri, daydreamState.yOri, daydreamState.zOri);
 		if (!flapSound.isPlaying) flapSound.play();
 		birdAction = FLAPPING;
 	} else {
@@ -956,7 +956,7 @@ function render(timestamp) {
 		bodies[0].resetPosition(0, 40, 0);
 	}
 
-	if (keyboard.pressed('k') || fmb.clicking.K) {
+	if (keyboard.pressed('k') || fmb.clicking.K || daydreamState.isAppDown) {
 		if (kOnce) {
 			kOnce = false;
 
