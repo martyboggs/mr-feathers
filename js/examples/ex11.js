@@ -60,7 +60,7 @@ function initScene() {
 	camera.add(listener);
 	var audioLoader = new THREE.AudioLoader();
 	flapSound = new THREE.PositionalAudio(listener);
-	audioLoader.load('../sounds/flap.wav', function (buffer) {
+	audioLoader.load('sounds/flap.wav', function (buffer) {
 		flapSound.setBuffer(buffer);
 		flapSound.setRefDistance(20);
 		flapSound.loop = true;
@@ -1575,7 +1575,7 @@ function placeBoundaries(boundaries) {
 		});
 		geometry = new THREE.BoxGeometry(boundary.size[0], boundary.size[1], boundary.size[2]);
 		if (boundary.color === 'wall') {
-			var wallTexture = textureLoader.load('../../images/wall2.jpg');
+			var wallTexture = textureLoader.load('images/wall2.jpg');
 			wallTexture.wrapS = THREE.RepeatWrapping;
 			wallTexture.wrapT = THREE.RepeatWrapping;
 			var wallMat = new THREE.MeshLambertMaterial({map: wallTexture});
