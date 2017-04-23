@@ -128,8 +128,10 @@ function setupVR() {
 function bluetoothHandler(e) {
 	if (navigator.bluetooth) {
 		daydreamController = new DaydreamController().connect();
-	} else {
-		alert('no navigator.bluetooth');
+		daydreamController.onStateChange(function (state) {
+			daydreamState = state;
+			console.log(daydreamState);
+		});
 	}
 }
 
@@ -1436,6 +1438,7 @@ var labLight;
 var kOnce = true;
 var layMeter = 0;
 var daydreamController;
+var daydreamState = {isClickDown: false, isAppDown: false, isHomeDown: false, isVolPlusDown: false, isVolMinusDown: false, time: 0, seq: 0, xTouch: 0, yTouch: 0};
 
 var birdAction = 1;
 var WALKING = 0;

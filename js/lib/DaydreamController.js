@@ -31,7 +31,7 @@ function DaydreamController() {
 	}
 
 	function handleData( event ) {
-console.log(event);
+
 		var data = event.target.value;
 
 		// http://stackoverflow.com/questions/40730809/use-daydream-controller-on-hololens-or-outside-daydream/40753551#40753551
