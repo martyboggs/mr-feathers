@@ -856,8 +856,8 @@ function render(timestamp) {
 	}
 	bird.userData.lastY = bird.position.y;
 
+	console.log(daydreamState.xTouch, daydreamState.yTouch);
 	if (keyboard.pressed('j') || fmb.clicking.J || daydreamState.isClickDown) {
-		console.log(daydreamState.xTouch, daydreamState.yTouch);
 		if (!flapSound.isPlaying) flapSound.play();
 		birdAction = FLAPPING;
 	} else {
@@ -934,17 +934,22 @@ function render(timestamp) {
 	}
 
 	birdY = camera.rotation.y;
+	// should be angle between bird and camera POSITIONS (xz)
 
-	if (keyboard.pressed('w') || keyboard.pressed('up') || fmb.clicking.UP) {
+	if (daydreamData.isClickDown) {
 		bodies[0].applyImpulse(bodies[0].getPosition(), new OIMO.Vec3(-500 * Math.sin(birdY), 0, -500 * Math.cos(birdY)));
-	} else if (keyboard.pressed('s') || keyboard.pressed('down') || fmb.clicking.DOWN) {
-		bodies[0].applyImpulse(bodies[0].getPosition(), new OIMO.Vec3(500 * Math.sin(birdY), 0, 500 * Math.cos(birdY)));
-	}
+	} else {
+		if (keyboard.pressed('w') || keyboard.pressed('up') || fmb.clicking.UP) {
+			bodies[0].applyImpulse(bodies[0].getPosition(), new OIMO.Vec3(-500 * Math.sin(birdY), 0, -500 * Math.cos(birdY)));
+		} else if (keyboard.pressed('s') || keyboard.pressed('down') || fmb.clicking.DOWN) {
+			bodies[0].applyImpulse(bodies[0].getPosition(), new OIMO.Vec3(500 * Math.sin(birdY), 0, 500 * Math.cos(birdY)));
+		}
 
-	if (keyboard.pressed('a') || keyboard.pressed('left') || fmb.clicking.LEFT) {
-		bodies[0].applyImpulse(bodies[0].getPosition(), new OIMO.Vec3(-500 * Math.cos(-birdY), 0, -500 * Math.sin(-birdY)));
-	} else if (keyboard.pressed('d') || keyboard.pressed('right') || fmb.clicking.RIGHT) {
-		bodies[0].applyImpulse(bodies[0].getPosition(), new OIMO.Vec3(500 * Math.cos(-birdY), 0, 500 * Math.sin(-birdY)));
+		if (keyboard.pressed('a') || keyboard.pressed('left') || fmb.clicking.LEFT) {
+			bodies[0].applyImpulse(bodies[0].getPosition(), new OIMO.Vec3(-500 * Math.cos(-birdY), 0, -500 * Math.sin(-birdY)));
+		} else if (keyboard.pressed('d') || keyboard.pressed('right') || fmb.clicking.RIGHT) {
+			bodies[0].applyImpulse(bodies[0].getPosition(), new OIMO.Vec3(500 * Math.cos(-birdY), 0, 500 * Math.sin(-birdY)));
+		}
 	}
 
 	if (keyboard.pressed('r')) {
@@ -1434,7 +1439,7 @@ var labLight;
 var kOnce = true;
 var layMeter = 0;
 var daydreamController;
-var daydreamState = {isClickDown: false, isAppDown: false, isHomeDown: false, isVolPlusDown: false, isVolMinusDown: false, time: 0, seq: 0, xTouch: 0, yTouch: 0};
+var daydreamState = {isClickDown: false, isAppDown: false, isHomeDown: false, isVolPlusDown: false, isVolMinusDown: false, time: 0, seq: 0, xTouch: 0.5, yTouch: 0.5};
 
 var birdAction = 1;
 var WALKING = 0;
