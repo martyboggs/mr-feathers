@@ -856,7 +856,6 @@ function render(timestamp) {
 	}
 	bird.userData.lastY = bird.position.y;
 
-	console.log(daydreamState.xTouch, daydreamState.yTouch);
 	if (keyboard.pressed('j') || fmb.clicking.J || daydreamState.isClickDown) {
 		if (!flapSound.isPlaying) flapSound.play();
 		birdAction = FLAPPING;
@@ -934,10 +933,11 @@ function render(timestamp) {
 	}
 
 	birdY = camera.rotation.y;
-	// should be angle between bird and camera POSITIONS (xz)
+	birdY = Math.atan2(bird.position.z - camera.position.z, bird.position.x - camera.position.x);
 
 	if (daydreamData.isClickDown) {
-		bodies[0].applyImpulse(bodies[0].getPosition(), new OIMO.Vec3(-500 * Math.sin(birdY), 0, -500 * Math.cos(birdY)));
+		var daydreamAngle = Math.atan2(daydreamData.touchY, daydreamData.touchX);
+		bodies[0].applyImpulse(bodies[0].getPosition(), new OIMO.Vec3(-500 * Math.sin(birdY + daydreamAngle), 0, -500 * Math.cos(birdY + daydreamAngle)));
 	} else {
 		if (keyboard.pressed('w') || keyboard.pressed('up') || fmb.clicking.UP) {
 			bodies[0].applyImpulse(bodies[0].getPosition(), new OIMO.Vec3(-500 * Math.sin(birdY), 0, -500 * Math.cos(birdY)));
