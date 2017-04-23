@@ -93,8 +93,13 @@ function setupVR() {
 	};
 	vrButton = new webvrui.EnterVRButton(renderer.domElement, uiOptions);
 
-	vrButton.domElement.addEventListener('click', bluetoothHandler);
-	vrButton.domElement.addEventListener('touchend', bluetoothHandler);
+	// vrButton.domElement.addEventListener('click', bluetoothHandler);
+	// vrButton.domElement.addEventListener('touchend', bluetoothHandler);
+	window.addEventListener("gamepadconnected", function(e) {
+		console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
+		e.gamepad.index, e.gamepad.id,
+		e.gamepad.buttons.length, e.gamepad.axes.length);
+	});
 
 	vrButton.on('enter', function () {
 		if (vrButton.state === 'presenting') {
@@ -120,13 +125,13 @@ function setupVR() {
 	setupStage();
 }
 
-function bluetoothHandler(e) {
-	navigator.bluetooth.requestDevice({filters: [
-		{services: ['indoor_positioning', 'device_information']}
-	]}).then(function (d, e) {
-		console.dir(d, e);
-	});
-}
+// function bluetoothHandler(e) {
+// 	navigator.bluetooth.requestDevice({filters: [
+// 		{services: ['indoor_positioning', 'device_information']}
+// 	]}).then(function (d, e) {
+// 		console.dir(d, e);
+// 	});
+// }
 
 // Get the HMD, and if we're dealing with something that specifies
 // stageParameters, rearrange the scene.
