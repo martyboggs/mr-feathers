@@ -35,7 +35,7 @@ var sound = (function () {
 				index += 1;
 				self.load_next();
 			}, false);
-			audio.src = '../../sounds/'+ name +'.wav';
+			audio.src = '../sounds/'+ name +'.wav';
 		},
 		play: function (name) {
 			if (sounds[name] && sounds[name].audio) {
