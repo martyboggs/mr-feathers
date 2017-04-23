@@ -401,9 +401,9 @@ function initPhysics() {
 
 function Store(target) {
 	if (!target) console.warn('no target element provided');
-	var store = document.createElement('div');
-	store.className = store.id = 'store';
-	store.innerHTML = '<button class="close" value="close">X</button>';
+	var storeDiv = document.createElement('div');
+	storeDiv.className = storeDiv.id = 'store';
+	storeDiv.innerHTML = '<button class="close" value="close">X</button>';
 	var products = {
 		beak1: {description: 'Increase the number of rods you can carry to ',
 			key: 'rodLimit', value: 3, seconds: 5,
@@ -459,9 +459,9 @@ function Store(target) {
 		if (products[key].eggs)
 			item += '<button class="item-button eggs" value="' + key + '" ' + disabled + '>' + products[key].eggs + ' eggs<span class="price">' + '</span></button>';
 		item += '</div>';
-		store.innerHTML += item;
+		storeDiv.innerHTML += item;
 	}
-	target.appendChild(store);
+	target.appendChild(storeDiv);
 
 	document.addEventListener('click', storeHandler);
 
