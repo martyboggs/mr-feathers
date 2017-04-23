@@ -93,14 +93,12 @@ function setupVR() {
 	};
 	vrButton = new webvrui.EnterVRButton(renderer.domElement, uiOptions);
 
+	vrButton.domElement.addEventListener('click', bluetoothHandler);
+	vrButton.domElement.addEventListener('touchend', bluetoothHandler);
+
 	vrButton.on('enter', function () {
 		if (vrButton.state === 'presenting') {
 			canvasParent.className = 'vr-active';
-			navigator.bluetooth.requestDevice({filters: [
-				{services: ['indoor_positioning', 'device_information']}
-			]}).then(function (d, e) {
-				console.dir(d, e);
-			});
 		}
 	});
 	vrButton.on('exit', function () {
@@ -120,6 +118,14 @@ function setupVR() {
 	// });
 
 	setupStage();
+}
+
+function bluetoothHandler() {
+	navigator.bluetooth.requestDevice({filters: [
+		{services: ['indoor_positioning', 'device_information']}
+	]}).then(function (d, e) {
+		console.dir(d, e);
+	});
 }
 
 // Get the HMD, and if we're dealing with something that specifies
