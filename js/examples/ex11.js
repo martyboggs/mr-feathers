@@ -127,7 +127,8 @@ function setupVR() {
 
 function bluetoothHandler(e) {
 	if (navigator.bluetooth) {
-		daydreamController = new DaydreamController().connect();
+		daydreamController = new DaydreamController();
+		daydreamController.connect();
 		daydreamController.onStateChange(function (state) {
 			daydreamState = state;
 			console.log(daydreamState);
