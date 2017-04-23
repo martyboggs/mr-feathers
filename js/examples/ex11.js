@@ -121,18 +121,17 @@ function setupVR() {
 }
 
 function bluetoothHandler(e) {
-	// navigator.bluetooth.requestDevice({filters: [
-	// 	{services: ['indoor_positioning', 'device_information']}
-	// ]}).then(function (d, e) {
-	// 	console.dir(d, e);
-	// });
+	navigator.bluetooth.requestDevice({filters: [
+		{services: ['indoor_positioning', 'device_information']}
+	]}).then(function (d, e) {
+		console.dir(d, e);
+	});
 }
 
 // Get the HMD, and if we're dealing with something that specifies
 // stageParameters, rearrange the scene.
 function setupStage() {
 	navigator.getVRDisplays().then(function (displays) {
-		console.log(displays);
 		if (displays.length > 0) {
 			vrDisplay = displays[0];
 			if (vrDisplay.stageParameters) {
