@@ -60,7 +60,7 @@ function initScene() {
 	camera.add(listener);
 	var audioLoader = new THREE.AudioLoader();
 	flapSound = new THREE.PositionalAudio(listener);
-	audioLoader.load('../sounds/flap.wav', function (buffer) {
+	audioLoader.load('../../sounds/flap.wav', function (buffer) {
 		flapSound.setBuffer(buffer);
 		flapSound.setRefDistance(20);
 		flapSound.loop = true;
