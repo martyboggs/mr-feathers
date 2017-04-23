@@ -120,12 +120,12 @@ function setupVR() {
 	setupStage();
 }
 
-function bluetoothHandler() {
-	navigator.bluetooth.requestDevice({filters: [
-		{services: ['indoor_positioning', 'device_information']}
-	]}).then(function (d, e) {
-		console.dir(d, e);
-	});
+function bluetoothHandler(e) {
+	// navigator.bluetooth.requestDevice({filters: [
+	// 	{services: ['indoor_positioning', 'device_information']}
+	// ]}).then(function (d, e) {
+	// 	console.dir(d, e);
+	// });
 }
 
 // Get the HMD, and if we're dealing with something that specifies
