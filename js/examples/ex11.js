@@ -95,11 +95,6 @@ function setupVR() {
 
 	vrButton.domElement.addEventListener('click', bluetoothHandler);
 	vrButton.domElement.addEventListener('touchend', bluetoothHandler);
-	// window.addEventListener("gamepadconnected", function(e) {
-	// 	console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
-	// 	e.gamepad.index, e.gamepad.id,
-	// 	e.gamepad.buttons.length, e.gamepad.axes.length);
-	// });
 
 	vrButton.on('enter', function () {
 		if (vrButton.state === 'presenting') {
@@ -862,7 +857,7 @@ function render(timestamp) {
 	bird.userData.lastY = bird.position.y;
 
 	if (keyboard.pressed('j') || fmb.clicking.J || daydreamState.isClickDown) {
-		console.log(daydreamState.xOri, daydreamState.yOri, daydreamState.zOri);
+		console.log(daydreamState.xTouch, daydreamState.yTouch);
 		if (!flapSound.isPlaying) flapSound.play();
 		birdAction = FLAPPING;
 	} else {
