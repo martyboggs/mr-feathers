@@ -499,6 +499,7 @@ function Store(target) {
 		} else if (e.target.className.indexOf('close') !== -1) {
 			document.removeEventListener('click', storeHandler);
 			target.removeChild(document.getElementById('store'));
+			store = null;
 		}
 	}
 }
@@ -936,7 +937,6 @@ function render(timestamp) {
 	birdY = Math.atan2(camera.position.z - bird.position.z, bird.position.x - camera.position.x) - Math.PI / 2;
 	if (daydreamState.isClickDown) {
 		var daydreamAngle = Math.atan2(-daydreamState.yTouch + 0.5, daydreamState.xTouch - 0.5) - Math.PI / 2;
-		console.log(daydreamAngle * 180 / Math.PI);
 		bodies[0].applyImpulse(bodies[0].getPosition(), new OIMO.Vec3(-500 * Math.sin(birdY + daydreamAngle), 0, -500 * Math.cos(birdY + daydreamAngle)));
 	} else {
 		if (keyboard.pressed('w') || keyboard.pressed('up') || fmb.clicking.UP) {
@@ -954,6 +954,10 @@ function render(timestamp) {
 
 	if (keyboard.pressed('r')) {
 		bodies[0].resetPosition(0, 40, 0);
+	}
+
+	if (daydreamState.isHomeDown) {
+		if (!store) store = new Store(canvasParent);
 	}
 
 	if (keyboard.pressed('k') || fmb.clicking.K || daydreamState.isAppDown) {
@@ -1440,6 +1444,7 @@ var kOnce = true;
 var layMeter = 0;
 var daydreamController;
 var daydreamState = {isClickDown: false, isAppDown: false, isHomeDown: false, isVolPlusDown: false, isVolMinusDown: false, time: 0, seq: 0, xTouch: 0.5, yTouch: 0.5};
+var store;
 
 var birdAction = 1;
 var WALKING = 0;
@@ -1454,8 +1459,8 @@ var lastAction = birdAction;
 initScene();
 var gui = new EasyGui(canvasParent);
 var fmb = new FlexboxMobileButtons({parent: canvasParent, onclick: function (value) {
-	if (value === 'store') {
-		new Store(canvasParent);
+	if (value === 'store' && !store) {
+		store = new Store(canvasParent);
 	}
 }});
 setupVR();
