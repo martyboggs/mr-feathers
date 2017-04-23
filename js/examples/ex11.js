@@ -7,11 +7,8 @@ function initScene() {
 	camera.rotation.y = Math.PI / 4;
 	camera.rotation.order = 'YXZ';
 
-	var n = navigator.userAgent;
-	var antialias = true;
-	if (n.match(/Android/i) || n.match(/webOS/i) || n.match(/iPhone/i) || n.match(/iPad/i) || n.match(/iPod/i) || n.match(/BlackBerry/i) || n.match(/Windows Phone/i)) { isMobile = true;  antialias = false; }
 	// precision: 'mediump'
-	renderer = new THREE.WebGLRenderer({antialias: antialias});
+	renderer = new THREE.WebGLRenderer({antialias: isMobile});
 	renderer.setPixelRatio(window.devicePixelRatio);
 	renderer.setClearColor('white', 1);
 	canvasParent.appendChild(renderer.domElement);
@@ -1065,15 +1062,15 @@ function render(timestamp) {
 
 	// position camera
 	if (bird.position.y > 250 && camera.position.y === cameraPos[1]) {
-		new TWEEN.Tween(camera.position).to({y: 500}, 1000).easing(TWEEN.Easing.Sinusoidal.Out).start();
+		new TWEEN.Tween(camera.position).to({y: 500}, 2000).easing(TWEEN.Easing.Sinusoidal.Out).start();
 	} else if (bird.position.y < 250 && camera.position.y === 500) {
-		new TWEEN.Tween(camera.position).to({y: cameraPos[1]}, 1000).easing(TWEEN.Easing.Sinusoidal.Out).start();
+		new TWEEN.Tween(camera.position).to({y: cameraPos[1]}, 2000).easing(TWEEN.Easing.Sinusoidal.Out).start();
 	}
 
 	if (bird.position.z > 100 && camera.position.z === cameraPos[2] && bird.position.y < 100) {
-		new TWEEN.Tween(camera.position).to({z: 200}, 1000).easing(TWEEN.Easing.Sinusoidal.Out).start();
+		new TWEEN.Tween(camera.position).to({z: 200}, 2000).easing(TWEEN.Easing.Sinusoidal.Out).start();
 	} else if (bird.position.z < 100 && camera.position.z === 200) {
-		new TWEEN.Tween(camera.position).to({z: cameraPos[2]}, 1000).easing(TWEEN.Easing.Sinusoidal.Out).start();
+		new TWEEN.Tween(camera.position).to({z: cameraPos[2]}, 2000).easing(TWEEN.Easing.Sinusoidal.Out).start();
 	}
 
 	// toggle lights
@@ -1405,7 +1402,9 @@ var geoBox = new THREE.BoxGeometry(1, 1, 1);
 var buffGeoBox = new THREE.BufferGeometry();
 buffGeoBox.fromGeometry(new THREE.BoxGeometry(1, 1, 1));
 var keyboard = new THREEx.KeyboardState();
-var isMobile;
+var n = navigator.userAgent;
+if (n.match(/Android/i) || n.match(/webOS/i) || n.match(/iPhone/i) || n.match(/iPad/i) || n.match(/iPod/i) || n.match(/BlackBerry/i) || n.match(/Windows Phone/i)) { var isMobile = true; }
+
 var flapSound;
 var fullscreen = false;
 var tmpVec = new THREE.Vector3();
@@ -1464,10 +1463,12 @@ var fmb = new FlexboxMobileButtons({parent: canvasParent, onclick: function (val
 	}
 }});
 setupVR();
-fmb.row().button('UP')
-.row().button('LEFT').button('DOWN').button('RIGHT')
-.row().button('J', 'flap').button('K', 'drop')
-.fullscreen(renderer.domElement).button('store');
+if (isMobile) {
+	fmb.row().button('UP')
+	.row().button('LEFT').button('DOWN').button('RIGHT')
+	.row().button('J', 'flap').button('K', 'drop');
+}
+fmb.fullscreen(renderer.domElement).button('store');
 var messages = new Messages(canvasParent);
 var pipe = new Pipe();
 initBird();
