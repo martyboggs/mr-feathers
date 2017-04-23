@@ -1473,11 +1473,11 @@ new Reactor([0, 40, 250 - 2.5]);
 new Reactor([80, 40, 250 - 2.5]);
 
 sound.init({
-	drag: {type: 'once'}, // loop
-	flap: {type: 'once'}, // loop
-	crash: {type: 'once'}, // 'overlap'
+	drag: {type: 'loop'},
+	flap: {type: 'loop'},
+	crash: {type: 'overlap'},
 	powerup: {type: 'once'},
-	rod: {type: 'once'}, //'overlap'
+	rod: {type: 'overlap'},
 	blip: {type: 'once'}
 });
 if (!effect) render();
