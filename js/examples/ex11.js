@@ -933,7 +933,7 @@ function render(timestamp) {
 	}
 
 	// birdY = camera.rotation.y;
-	birdY = Math.atan2(camera.position.z - bird.position.z, bird.position.x - camera.position.x) - Math.PI / 4;
+	birdY = Math.atan2(camera.position.z - bird.position.z, bird.position.x - camera.position.x);
 	if (daydreamState.isClickDown) {
 		var daydreamAngle = Math.atan2(daydreamState.yTouch - 0.5, daydreamState.xTouch - 0.5) + Math.PI;
 		console.log(daydreamAngle * 180 / Math.PI);
