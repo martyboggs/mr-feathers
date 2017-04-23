@@ -936,7 +936,7 @@ function render(timestamp) {
 	birdY = Math.atan2(camera.position.z - bird.position.z, bird.position.x - camera.position.x) - Math.PI / 4;
 	if (daydreamState.isClickDown) {
 		var daydreamAngle = Math.atan2(daydreamState.yTouch - 0.5, daydreamState.xTouch - 0.5) + Math.PI;
-		console.log(daydreamAngle);
+		console.log(daydreamAngle * 180 / Math.PI);
 		bodies[0].applyImpulse(bodies[0].getPosition(), new OIMO.Vec3(-500 * Math.sin(birdY + daydreamAngle), 0, -500 * Math.cos(birdY + daydreamAngle)));
 	} else {
 		if (keyboard.pressed('w') || keyboard.pressed('up') || fmb.clicking.UP) {
