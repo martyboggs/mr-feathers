@@ -501,7 +501,6 @@ Store.prototype = {
 	close: function () {
 		document.removeEventListener('click', this.storeHandler);
 		this.target.removeChild(document.getElementById('store'));
-		console.log('close', store);
 		store = null;
 	}
 };
@@ -959,11 +958,14 @@ function render(timestamp) {
 	}
 
 	if (daydreamState.isHomeDown) {
-		if (!store) {
+		if (!store && daydreamState.isHomeDownOnce) {
 			store = new Store(canvasParent);
 		} else {
 			store.close();
 		}
+		daydreamState.isHomeDownOnce = false;
+	} else {
+		daydreamState.isHomeDownOnce = true;
 	}
 
 	if (keyboard.pressed('k') || fmb.clicking.K || daydreamState.isAppDown) {
@@ -1451,7 +1453,7 @@ var labLight;
 var kOnce = true;
 var layMeter = 0;
 var daydreamController;
-var daydreamState = {isClickDown: false, isAppDown: false, isHomeDown: false, isVolPlusDown: false, isVolMinusDown: false, time: 0, seq: 0, xTouch: 0.5, yTouch: 0.5};
+var daydreamState = {isClickDown: false, isAppDown: false, isHomeDown: false, isHomeDownOnce: true, isVolPlusDown: false, isVolMinusDown: false, time: 0, seq: 0, xTouch: 0.5, yTouch: 0.5};
 var store;
 
 var birdAction = 1;
