@@ -958,12 +958,14 @@ function render(timestamp) {
 	}
 
 	if (daydreamState.isHomeDown) {
-		if (!store && daydreamState.isHomeDownOnce) {
-			store = new Store(canvasParent);
-		} else {
-			store.close();
+		if (daydreamState.isHomeDownOnce) {
+			daydreamState.isHomeDownOnce = false;
+			if (!store) {
+				store = new Store(canvasParent);
+			} else {
+				store.close();
+			}
 		}
-		daydreamState.isHomeDownOnce = false;
 	} else {
 		daydreamState.isHomeDownOnce = true;
 	}
