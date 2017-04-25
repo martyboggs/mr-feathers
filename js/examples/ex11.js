@@ -398,6 +398,7 @@ function initPhysics() {
 
 function Store(target) {
 	if (!target) console.warn('no target element provided');
+	this.target = target;
 	var storeDiv = document.createElement('div');
 	storeDiv.className = storeDiv.id = 'store';
 	storeDiv.innerHTML = '<button class="close" value="close">X</button>';
@@ -458,12 +459,12 @@ function Store(target) {
 		item += '</div>';
 		storeDiv.innerHTML += item;
 	}
-	target.appendChild(storeDiv);
+	this.target.appendChild(storeDiv);
 
-	document.addEventListener('click', storeHandler);
-
-	var self = this;
-	function storeHandler(e) {
+	document.addEventListener('click', this.storeHandler);
+}
+Store.prototype = {
+	storeHandler: function (e) {
 		var item = e.target.parentNode;
 		if (item && e.target.className.indexOf('item-button') !== -1) {
 			var unit = e.target.className.indexOf('rods') !== -1 ? 'rods' : 'eggs';
@@ -494,12 +495,16 @@ function Store(target) {
 			}
 			sound.play('rod');
 		} else if (e.target.className.indexOf('close') !== -1) {
-			store = null;
-			document.removeEventListener('click', storeHandler);
-			target.removeChild(document.getElementById('store'));
+			this.close();
 		}
+	},
+	close: function () {
+		document.removeEventListener('click', this.storeHandler);
+		this.target.removeChild(document.getElementById('store'));
+		console.log('close', store);
+		store = null;
 	}
-}
+};
 
 function Messages(target) {
 	this.messages = [];
@@ -954,7 +959,11 @@ function render(timestamp) {
 	}
 
 	if (daydreamState.isHomeDown) {
-		if (!store) store = new Store(canvasParent);
+		if (!store) {
+			store = new Store(canvasParent);
+		} else {
+			store.close();
+		}
 	}
 
 	if (keyboard.pressed('k') || fmb.clicking.K || daydreamState.isAppDown) {
