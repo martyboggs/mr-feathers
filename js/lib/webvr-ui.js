@@ -791,7 +791,7 @@ var EnterVRButton = function (_EventEmitter) {
 
     // Pass in your own domElement if you really dont want to use ours
     _this.domElement = options.domElement || (0, _dom.createDefaultView)(options);
-    _this.__defaultDisplayStyle = _this.domElement.style.display || 'initial';
+    // _this.__defaultDisplayStyle = _this.domElement.style.display || 'initial';
 
     // Create WebVR Manager
     _this.manager = new _webvrManager2.default();

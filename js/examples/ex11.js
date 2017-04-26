@@ -67,10 +67,10 @@ function initScene() {
 
 	window.addEventListener('resize', onWindowResize, false);
 
-	// lab floor
-	var gridHelper = new THREE.GridHelper(500, 50);
-	gridHelper.position.z = 250 + 106;
-	scene.add(gridHelper);
+	// // lab floor
+	// var gridHelper = new THREE.GridHelper(500, 50);
+	// gridHelper.position.z = 250 + 106;
+	// scene.add(gridHelper);
 }
 
 function setupVR() {
@@ -100,8 +100,6 @@ function setupVR() {
 	});
 	vrButton.on('exit', function () {
 		canvasParent.className = '';
-		// camera.quaternion.set(0, 0, 0, 1);
-		// camera.position.set(0, controls.userHeight, 0);
 	});
 	vrButton.on('hide', function () {
 		document.getElementById('ui').style.display = 'none';
@@ -110,9 +108,6 @@ function setupVR() {
 		document.getElementById('ui').style.display = 'block';
 	});
 	document.getElementById('vr-button').appendChild(vrButton.domElement);
-	// document.getElementById('magic-window').addEventListener('click', function () {
-	// 	vrButton.requestEnterFullscreen();
-	// });
 
 	setupStage();
 }
@@ -145,7 +140,7 @@ function Reactor(pos) {
 	reactors.push(this);
 	this.number = reactors.length + 1;
 	this.rods = [];
-	this.mesh = new THREE.Mesh(reactorGeom, tan);
+	this.mesh = new THREE.Mesh(reactorGeom, white);
 	this.mesh.rotation.order = 'YXZ';
 	this.mesh.position.set(pos[0], pos[1], pos[2]);
 	scene.add(this.mesh);
@@ -340,7 +335,7 @@ function initPhysics() {
 	bodies.push(body);
 	body.connectMesh(bird);
 
-	var ground = {size: [500, 50, 150], pos: [0, -25, 175]};
+	var ground = {size: [500, 50, 150], pos: [0, -25, 175], color: darkGray};
 	placeGround(ground);
 	var ground = {size: [500, 50, 350], pos: [0, -25, -75], color: new THREE.MeshLambertMaterial({color: '#2f221b'})};
 	placeGround(ground);
@@ -381,8 +376,13 @@ function initPhysics() {
 		{pos: [250 - 50, 50, 100], size: [100, 40, 10], color: 'wall'},
 		{pos: [-250 + 50, 50, 100], size: [100, 40, 10], color: 'wall'},
 		{pos: [0, 50, 100], size: [220, 40, 10], color: 'wall'}, // between windows
-		{pos: [0, 100 + 5, 175], size: [510, 10, 160], color: white}, // ceiling
-		{pos: [-60, 30 / 2, 105], size: [60, 30, 10], color: gray}, // interior
+		{pos: [0, 100 + 5, 175], size: [510, 10, 160], color: 'lights'}, // ceiling
+		{pos: [-90, 100 / 2, 250 - 30 / 2], size: [20, 100, 30], color: white}, // pillar
+		{pos: [-40, 20 / 2, 100 + 20/2], size: [60, 20, 20], color: white}, // lab table1
+		{pos: [-40, 20 + 5 / 2, 100 + 20/2 + 3], size: [63, 5, 23], color: darkerGray}, // lab table1top
+		{pos: [-250 + 40 / 2, 30 / 2, 100 + 150 / 2], size: [40, 30, 150], color: white}, // far lab table
+		{pos: [-250 + 43 / 2, 30 + 5 / 2, 100 + 150 / 2], size: [43, 5, 150], color: darkerGray}, // far lab tabletop
+
 
 		{pos: [stockpilePos[0] + 10, 5, stockpilePos[1]], size: [2, 10, 22], color: black}, // stockpile
 		{pos: [stockpilePos[0] - 10, 5, stockpilePos[1]], size: [2, 10, 22], color: black}, // stockpile
@@ -401,7 +401,7 @@ function Store(target) {
 	this.target = target;
 	var storeDiv = document.createElement('div');
 	storeDiv.className = storeDiv.id = 'store';
-	storeDiv.innerHTML = '<button class="close" value="close">X</button>';
+	storeDiv.innerHTML = '';
 	var products = {
 		beak1: {description: 'Increase the number of rods you can carry to ',
 			key: 'rodLimit', value: 3, seconds: 5,
@@ -459,8 +459,8 @@ function Store(target) {
 		item += '</div>';
 		storeDiv.innerHTML += item;
 	}
+	storeDiv.innerHTML += '<button class="close" value="close">close</button>'
 	this.target.appendChild(storeDiv);
-
 	document.addEventListener('click', this.storeHandler);
 }
 Store.prototype = {
@@ -495,7 +495,10 @@ Store.prototype = {
 			}
 			sound.play('rod');
 		} else if (e.target.className.indexOf('close') !== -1) {
-			this.close();
+			// this.close();
+			document.removeEventListener('click', this.storeHandler);
+			canvasParent.removeChild(document.getElementById('store'));
+			store = null;
 		}
 	},
 	close: function () {
@@ -521,7 +524,7 @@ Messages.prototype = {
 		m.className = 'message';
 		m.innerHTML =
 			'<p class="message-text">' + message + '</p>' +
-			'<img src="/images/' + icon + '.jpg">';
+			'<img src="images/' + icon + '.jpg">';
 		this.container.appendChild(m);
 		var message = {el: m, birthday: frame ? frame : 0};
 		this.messages.push(message);
@@ -533,7 +536,7 @@ Messages.prototype = {
 		m.innerHTML =
 			'<p class="message-text">' + message + '</p>' +
 			'<span id="challenge-bar" class="bar"></span>' +
-			'<img src="/images/' + icon + '.jpg">';
+			'<img src="images/' + icon + '.jpg">';
 		this.container.appendChild(m);
 		messages.challenge = {
 			status: 'started',
@@ -549,7 +552,7 @@ Messages.prototype = {
 		var m = document.createElement('div');
 		m.className = 'message';
 		m.innerHTML =
-			'<img id="challenge-button" class="challenge-button" src="/images/' + icon + '.jpg">';
+			'<img id="challenge-button" class="challenge-button" src="images/' + icon + '.jpg">';
 		this.container.appendChild(m);
 		messages.challenge.status = 'init';
 		document.getElementById('challenge-button').addEventListener('click', function (e) {
@@ -569,7 +572,7 @@ Messages.prototype = {
 		m.innerHTML =
 			'<p class="message-text">' + key + '</p>' +
 			'<span id="' + key + '" class="countdown"></span>' +
-			'<img src="/images/' + gui.purchased[key].key + '.jpg">';
+			'<img src="images/' + gui.purchased[key].key + '.jpg">';
 		this.container.appendChild(m);
 		return m;
 	},
@@ -579,7 +582,7 @@ Messages.prototype = {
 		m.innerHTML =
 			'<p class="message-text">Egg hatching in ' + '</p>' +
 			'<span id="egg-countdown' + treeIndex + '" class="egg-countdown"></span>s' +
-			'<img src="/images/eggs.jpg">';
+			'<img src="images/eggs.jpg">';
 		this.container.appendChild(m);
 		trees[treeIndex].eggCountdown = document.getElementById('egg-countdown' + treeIndex);
 		return m;
@@ -591,7 +594,7 @@ Messages.prototype = {
 		m.innerHTML =
 			'<p class="message-text">Egg hatching in ' + '</p>' +
 			'<span class="bonus-countdown"></span>s' +
-			'<img src="/images/eggs.jpg">';
+			'<img src="images/eggs.jpg">';
 		this.container.appendChild(m);
 		trees[index].eggCountdown = document.getElementById('egg-countdown' + index);
 		return m;
@@ -676,7 +679,7 @@ function EasyGui(parent) {
 	var guiEl = document.createElement('div');
 	guiEl.className = 'gui';
 	guiEl.innerHTML = '<div class="top-row">' +
-		'<div>Three.js World</div>' +
+		'<div>Mr. Feathers</div>' +
 		'<div class="holdingBox"><span id="holding">' + this.holding +
 		'</span>/<span id="rodLimit">' + this.rodLimit + '</span></div>' +
 		'<div class="rodsBox"><span id="rods">' + Math.round(this.rods) + '</span> rods</div>' +
@@ -781,7 +784,7 @@ EasyGui.prototype = {
 
 			for (var key in this.purchased) {
 				if (this.purchased[key].seconds && !this.purchased[key].rewarded) {
-					console.log('check', frameS - (this.purchased[key].boughtTime + this.purchased[key].seconds * 1000));
+					// console.log('check', frameS - (this.purchased[key].boughtTime + this.purchased[key].seconds * 1000));
 					if (frameS < this.purchased[key].boughtTime + this.purchased[key].seconds * 1000) {
 						var countdown = document.getElementById(key);
 						if (!countdown) {
@@ -1403,6 +1406,8 @@ var wingsAway = false;
 var blue1 = new THREE.MeshLambertMaterial({color: '#0E1A40'});
 var blue2 = new THREE.MeshLambertMaterial({color: '#222F5B'});
 var gray = new THREE.MeshLambertMaterial({color: '#666666'});
+var darkGray = new THREE.MeshLambertMaterial({color: '#474747'});
+var darkerGray = new THREE.MeshLambertMaterial({color: '#2d2c2c'});
 var tan = new THREE.MeshLambertMaterial({color: '#946B2D'});
 var black = new THREE.MeshLambertMaterial({color: 'black'});
 var white = new THREE.MeshLambertMaterial({color: 'white'});
@@ -1593,20 +1598,31 @@ function placeBoundaries(boundaries) {
 			config: [0.2, 0.4, 0.1]
 		});
 		geometry = new THREE.BoxGeometry(boundary.size[0], boundary.size[1], boundary.size[2]);
-		if (boundary.color === 'wall') {
-			var wallTexture = textureLoader.load('images/wall2.jpg');
+		if (boundary.color === 'wall' || boundary.color === 'lights') {
+			var wallTexture = textureLoader.load('images/' + boundary.color + '.jpg');
 			wallTexture.wrapS = THREE.RepeatWrapping;
 			wallTexture.wrapT = THREE.RepeatWrapping;
 			var wallMat = new THREE.MeshLambertMaterial({map: wallTexture});
-			var mat = new THREE.MultiMaterial([wallMat, wallMat, wallMat, wallMat, white, wallMat]);
-			mesh = new THREE.Mesh(geometry, mat);
-			mesh.geometry.computeBoundingBox();
-			var max = mesh.geometry.boundingBox.max;
-			var min = mesh.geometry.boundingBox.min;
-			var height = max.y - min.y;
-			var width = max.x - min.x;
-			wallTexture.repeat.set(width / 75, height / 52);
-			// wallTexture.needsUpdate = true;
+			if (boundary.color === 'wall') {
+				var insideWallTexture = textureLoader.load('images/insideWall.jpg');
+				insideWallTexture.wrapS = THREE.RepeatWrapping;
+				insideWallTexture.wrapT = THREE.RepeatWrapping;
+				var insideWallMat = new THREE.MeshLambertMaterial({map: insideWallTexture});
+
+				var mat = new THREE.MultiMaterial([white, white, white, white, insideWallMat, wallMat]);
+				mesh = new THREE.Mesh(geometry, mat);
+				mesh.geometry.computeBoundingBox();
+				var max = mesh.geometry.boundingBox.max;
+				var min = mesh.geometry.boundingBox.min;
+				var height = max.y - min.y;
+				var width = max.x - min.x;
+				wallTexture.repeat.set(width / 75, height / 52);
+				insideWallTexture.repeat.set(width / 56, height / 56);
+			} else if (boundary.color === 'lights') {
+				var mat = new THREE.MultiMaterial([white, white, white, wallMat, white, white]);
+				mesh = new THREE.Mesh(geometry, mat);
+				wallTexture.repeat.set(1, 1);
+			}
 		} else {
 			mesh = new THREE.Mesh(geometry, boundary.color);
 		}

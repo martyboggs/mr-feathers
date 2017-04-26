@@ -31,7 +31,6 @@ function FlexboxMobileButtons(args) {
 	}
 
 	function isButton(target) {
-console.log(target);
 		return target.className.indexOf('fmb-button') !== -1;
 	}
 
