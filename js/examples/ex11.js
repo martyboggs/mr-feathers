@@ -865,7 +865,7 @@ function render(timestamp) {
 		if (!flapSound.isPlaying) flapSound.play();
 		birdAction = FLAPPING;
 	} else {
-		if (flapSound.isPlaying) flapSound.stop();
+		if (flapSound && flapSound.stop && flapSound.source) flapSound.stop();
 		if (birdAction === FLAPPING) birdAction = HOVER;
 	}
 
