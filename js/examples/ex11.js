@@ -140,7 +140,7 @@ function Reactor(pos) {
 	reactors.push(this);
 	this.number = reactors.length + 1;
 	this.rods = [];
-	this.mesh = new THREE.Mesh(reactorGeom, white);
+	this.mesh = new THREE.Mesh(reactorGeom, gray);
 	this.mesh.rotation.order = 'YXZ';
 	this.mesh.position.set(pos[0], pos[1], pos[2]);
 	scene.add(this.mesh);
@@ -363,7 +363,7 @@ function initPhysics() {
 	var boundaries = [
 		{pos: [-250, 250, 0], size: [1, 500, 500], color: gray},
 		{pos: [250, 250, 0], size: [1, 500, 500], color: gray},
-		{pos: [0, 250, 250], size: [500, 500, 1], color: gray},
+		{pos: [0, 250, 250], size: [500, 500, 1], color: white},
 		{pos: [0, 250, -250], size: [500, 500, 1], color: gray},
 		//y
 		//30
@@ -377,7 +377,7 @@ function initPhysics() {
 		{pos: [-250 + 50, 50, 100], size: [100, 40, 10], color: 'wall'},
 		{pos: [0, 50, 100], size: [220, 40, 10], color: 'wall'}, // between windows
 		{pos: [0, 100 + 5, 175], size: [510, 10, 160], color: 'lights'}, // ceiling
-		{pos: [-90, 100 / 2, 250 - 30 / 2], size: [20, 100, 30], color: white}, // pillar
+		{pos: [-90, 100 / 2, 250 - 30 / 2], size: [20, 100, 30], color: darkerGray}, // pillar
 		{pos: [-40, 20 / 2, 100 + 20/2], size: [60, 20, 20], color: white}, // lab table1
 		{pos: [-40, 20 + 5 / 2, 100 + 20/2 + 3], size: [63, 5, 23], color: darkerGray}, // lab table1top
 		{pos: [-250 + 40 / 2, 30 / 2, 100 + 150 / 2], size: [40, 30, 150], color: white}, // far lab table
@@ -519,7 +519,7 @@ function Messages(target) {
 }
 Messages.prototype = {
 	add: function (message, icon) {
-		sound.play('blip');
+		// sound.play('blip');
 		var m = document.createElement('div');
 		m.className = 'message';
 		m.innerHTML =
@@ -561,7 +561,7 @@ Messages.prototype = {
 			} else {
 				messages.challenge = {status: 'none'};
 			}
-			sound.play('blip');
+			// sound.play('blip');
 			messages.container.removeChild(document.getElementById('challenge-button').parentNode);
 		});
 		return m;
@@ -755,7 +755,7 @@ EasyGui.prototype = {
 		var challenge = messages.challenge;
 		if ((frame - challenge.last) % challenge.next === 0) { // challenges, random times
 			if (challenge.status === 'none') {
-				sound.play('powerup');
+				// sound.play('powerup');
 				messages.addButton('Diablo Power Station is putting us out of business! Steal more of their fuel rods and we\'ll give you a reward!', 'challenge', function () {
 					if (Math.random() < 0.95) {
 						messages.addChallenge('Challenge', 'challenge', 'rods', Math.pow(gui.level, 2) + 200);
@@ -1003,7 +1003,7 @@ function render(timestamp) {
 
 			// tapping
 			if (!tree && !gui.holding) { // prevent tapping if holding or nesting
-				sound.play('rod');
+				// sound.play('rod');
 				gui.add('rods', 1);
 
 				var rod = new THREE.Mesh(rodGeom, rodMat);
@@ -1105,7 +1105,7 @@ function render(timestamp) {
 
 	var birdCollide = world.checkContact('bird', 'ground');
 	if (birdCollide && bodies[0].linearVelocity.lengthSq() > 5) {
-		sound.play('drag');
+		// sound.play('drag');
 	} else {
 		if (sound.isPlaying('drag')) {
 			sound.stop('drag');
@@ -1113,7 +1113,7 @@ function render(timestamp) {
 	}
 
 	if (hardCollision('table')) {
-		sound.play('crash');
+		// sound.play('crash');
 	// } else if (softCollision('table')) {
 	// 	sound.play('crash');
 	}
@@ -1569,7 +1569,7 @@ function placeCompounds(items, shape, name) {
 			name: name,
 			config: [0.2, 0.4, 0.1]
 		});
-		mesh = new THREE.Mesh(shape.geometry, randomMat());
+		mesh = new THREE.Mesh(shape.geometry, white);
 		mesh.castShadow = true;
 		mesh.receiveShadow = true;
 		// mesh.add(hitSound);
@@ -1604,12 +1604,12 @@ function placeBoundaries(boundaries) {
 			wallTexture.wrapT = THREE.RepeatWrapping;
 			var wallMat = new THREE.MeshLambertMaterial({map: wallTexture});
 			if (boundary.color === 'wall') {
-				var insideWallTexture = textureLoader.load('images/insideWall.jpg');
-				insideWallTexture.wrapS = THREE.RepeatWrapping;
-				insideWallTexture.wrapT = THREE.RepeatWrapping;
-				var insideWallMat = new THREE.MeshLambertMaterial({map: insideWallTexture});
+				// var insideWallTexture = textureLoader.load('images/insideWall.jpg');
+				// insideWallTexture.wrapS = THREE.RepeatWrapping;
+				// insideWallTexture.wrapT = THREE.RepeatWrapping;
+				// var insideWallMat = new THREE.MeshLambertMaterial({map: insideWallTexture});
 
-				var mat = new THREE.MultiMaterial([white, white, white, white, insideWallMat, wallMat]);
+				var mat = new THREE.MultiMaterial([white, white, white, white, white, wallMat]);
 				mesh = new THREE.Mesh(geometry, mat);
 				mesh.geometry.computeBoundingBox();
 				var max = mesh.geometry.boundingBox.max;
@@ -1617,7 +1617,7 @@ function placeBoundaries(boundaries) {
 				var height = max.y - min.y;
 				var width = max.x - min.x;
 				wallTexture.repeat.set(width / 75, height / 52);
-				insideWallTexture.repeat.set(width / 56, height / 56);
+				// insideWallTexture.repeat.set(width / 56, height / 56);
 			} else if (boundary.color === 'lights') {
 				var mat = new THREE.MultiMaterial([white, white, white, wallMat, white, white]);
 				mesh = new THREE.Mesh(geometry, mat);
