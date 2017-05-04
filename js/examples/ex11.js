@@ -1496,14 +1496,14 @@ initPhysics();
 new Reactor([0, 40, 250 - 2.5]);
 new Reactor([80, 40, 250 - 2.5]);
 
-sound.init({
-	drag: {type: 'loop'},
-	// flap: {type: 'loop'},
-	crash: {type: 'overlap'},
-	powerup: {type: 'once'},
-	rod: {type: 'overlap'},
-	blip: {type: 'once'}
-});
+// sound.init({
+// 	drag: {type: 'loop'},
+// 	// flap: {type: 'loop'},
+// 	crash: {type: 'overlap'},
+// 	powerup: {type: 'once'},
+// 	rod: {type: 'overlap'},
+// 	blip: {type: 'once'}
+// });
 if (!effect) render();
 
 /*
