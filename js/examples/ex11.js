@@ -52,18 +52,18 @@ function initScene() {
 	scene.add(outsideLight);
 	scene.add(labLight);
 
-	// audio
-	var listener = new THREE.AudioListener();
-	camera.add(listener);
-	var audioLoader = new THREE.AudioLoader();
-	flapSound = new THREE.PositionalAudio(listener);
-	audioLoader.load('sounds/flap.wav', function (buffer) {
-		flapSound.setBuffer(buffer);
-		flapSound.setRefDistance(20);
-		flapSound.loop = true;
-		flapSound.play();
-		flapSound.stop();
-	});
+	// // audio
+	// var listener = new THREE.AudioListener();
+	// camera.add(listener);
+	// var audioLoader = new THREE.AudioLoader();
+	// flapSound = new THREE.PositionalAudio(listener);
+	// audioLoader.load('sounds/flap.wav', function (buffer) {
+	// 	flapSound.setBuffer(buffer);
+	// 	flapSound.setRefDistance(20);
+	// 	flapSound.loop = true;
+	// 	flapSound.play();
+	// 	flapSound.stop();
+	// });
 
 	window.addEventListener('resize', onWindowResize, false);
 
@@ -259,7 +259,7 @@ function initBird() {
 	bird = new THREE.Object3D().add(wingR, wingL, birdBody, head, beak);
 	bird.userData.lastY = bird.position.y;
 	scene.add(bird);
-	bird.add(flapSound);
+	// bird.add(flapSound);
 }
 
 function initTable() {
@@ -519,7 +519,7 @@ function Messages(target) {
 }
 Messages.prototype = {
 	add: function (message, icon) {
-		// sound.play('blip');
+		sound.play('blip');
 		var m = document.createElement('div');
 		m.className = 'message';
 		m.innerHTML =
@@ -561,7 +561,7 @@ Messages.prototype = {
 			} else {
 				messages.challenge = {status: 'none'};
 			}
-			// sound.play('blip');
+			sound.play('blip');
 			messages.container.removeChild(document.getElementById('challenge-button').parentNode);
 		});
 		return m;
@@ -755,7 +755,7 @@ EasyGui.prototype = {
 		var challenge = messages.challenge;
 		if ((frame - challenge.last) % challenge.next === 0) { // challenges, random times
 			if (challenge.status === 'none') {
-				// sound.play('powerup');
+				sound.play('powerup');
 				messages.addButton('Diablo Power Station is putting us out of business! Steal more of their fuel rods and we\'ll give you a reward!', 'challenge', function () {
 					if (Math.random() < 0.95) {
 						messages.addChallenge('Challenge', 'challenge', 'rods', Math.pow(gui.level, 2) + 200);
@@ -862,13 +862,10 @@ function render(timestamp) {
 	bird.userData.lastY = bird.position.y;
 
 	if (keyboard.pressed('j') || fmb.clicking.J || daydreamState.isClickDown) {
-		if (!flapSound.isPlaying) {
-			if (flapSound && flapSound.stop && flapSound.source) flapSound.stop();
-			flapSound.play();
-		}
+		sound.play('flap');
 		birdAction = FLAPPING;
 	} else {
-		if (flapSound && flapSound.stop && flapSound.source) flapSound.stop();
+		if (sound.isPlaying('flap')) sound.stop('flap');
 		if (birdAction === FLAPPING) birdAction = HOVER;
 	}
 
@@ -1006,7 +1003,7 @@ function render(timestamp) {
 
 			// tapping
 			if (!tree && !gui.holding) { // prevent tapping if holding or nesting
-				// sound.play('rod');
+				sound.play('rod');
 				gui.add('rods', 1);
 
 				var rod = new THREE.Mesh(rodGeom, rodMat);
@@ -1108,7 +1105,7 @@ function render(timestamp) {
 
 	var birdCollide = world.checkContact('bird', 'ground');
 	if (birdCollide && bodies[0].linearVelocity.lengthSq() > 5) {
-		// sound.play('drag');
+		sound.play('drag');
 	} else {
 		if (sound.isPlaying('drag')) {
 			sound.stop('drag');
@@ -1116,7 +1113,7 @@ function render(timestamp) {
 	}
 
 	if (hardCollision('table')) {
-		// sound.play('crash');
+		sound.play('crash');
 	// } else if (softCollision('table')) {
 	// 	sound.play('crash');
 	}
@@ -1499,14 +1496,14 @@ initPhysics();
 new Reactor([0, 40, 250 - 2.5]);
 new Reactor([80, 40, 250 - 2.5]);
 
-// sound.init({
-// 	drag: {type: 'loop'},
-// 	// flap: {type: 'loop'},
-// 	crash: {type: 'overlap'},
-// 	powerup: {type: 'once'},
-// 	rod: {type: 'overlap'},
-// 	blip: {type: 'once'}
-// });
+sound.init({
+	drag: {type: 'loop'},
+	flap: {type: 'loop'},
+	crash: {type: 'overlap'},
+	powerup: {type: 'once'},
+	rod: {type: 'overlap'},
+	blip: {type: 'once'}
+});
 if (!effect) render();
 
 /*
