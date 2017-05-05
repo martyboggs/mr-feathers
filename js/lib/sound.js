@@ -35,6 +35,7 @@ var sound = (function () {
 			// test if play() is ignored when not called from an input event handler
 			var video = document.createElement('video');
 			video.play();
+			console.log('keeps going');
 			return video.paused;
 		},
 		removeBehaviorsRestrictions() {
