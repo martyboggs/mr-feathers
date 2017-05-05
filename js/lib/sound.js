@@ -40,6 +40,8 @@ var sound = (function () {
 		removeBehaviorsRestrictions() {
 			for (var name in sounds) {
 				sounds[name].audio.load();
+				sounds[name].audio.play();
+				sounds[name].audio.pause();
 			}
 			console.log('sounds reloaded');
 			window.removeEventListener('keydown', this.removeBehaviorsRestrictions);
