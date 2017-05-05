@@ -327,7 +327,7 @@ function initPhysics() {
 	var body = world.add({
 		type: 'box',
 		size: [6, 6, 12],
-		pos: [0, 20, 0],
+		pos: [0, 3, 0],
 		move: true,
 		name: 'bird'
 	});
