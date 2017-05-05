@@ -11,31 +11,53 @@ var sound = (function () {
 			callback = Callback || function () {};
 			this.keys = Object.keys(sounds);
 			if (!this.keys.length) return;
+
+			for (var name in sounds) {
+				var audio = document.createElement('audio');
+				sounds[name].audio = audio;
+				audio.style.display = 'none';
+				audio.autoplay = false;
+				if (sounds[name].type === 'loop') {
+					audio.loop = true;
+				}
+				sounds[name].lastFrame = false;
+				var self = this;
+				audio.addEventListener('loadeddata', function () {
+					index += 1;
+					self.load_next(self.keys[index]);
+				}, false);
+			}
+
+			if (this.mediaPlaybackRequiresUserGesture()) {
+				window.addEventListener('keydown', this.removeBehaviorsRestrictions);
+				window.addEventListener('mousedown', this.removeBehaviorsRestrictions);
+				window.addEventListener('touchstart', this.removeBehaviorsRestrictions);
+			}
+
+			// start loop
 			this.load_next(this.keys[index]);
 		},
-		load_next: function () {
+		mediaPlaybackRequiresUserGesture() {
+			// test if play() is ignored when not called from an input event handler
+			var video = document.createElement('video');
+			video.play();
+			return video.paused;
+		},
+		removeBehaviorsRestrictions() {
+			for (var name in this.sounds) {
+				this.sounds[name].load();
+			}
+			window.removeEventListener('keydown', this.removeBehaviorsRestrictions);
+			window.removeEventListener('mousedown', this.removeBehaviorsRestrictions);
+			window.removeEventListener('touchstart', this.removeBehaviorsRestrictions);
+		},
+		load_next: function (name) {
 			if (index < this.keys.length) {
 				console.log(index, this.keys[index]);
-				this.load(this.keys[index]);
+				sounds[name].audio.src = 'sounds/'+ name +'.wav';
 			} else {
 				callback();
 			}
-		},
-		load: function (name) {
-			var self = this;
-			var audio = document.createElement('audio');
-			audio.style.display = 'none';
-			audio.autoplay = false;
-			if (sounds[name].type === 'loop') {
-				audio.loop = true;
-			}
-			sounds[name].lastFrame = false;
-			audio.addEventListener('loadeddata', function () {
-				sounds[name].audio = audio;
-				index += 1;
-				self.load_next();
-			}, false);
-			audio.src = 'sounds/'+ name +'.wav';
 		},
 		play: function (name) {
 			if (sounds[name] && sounds[name].audio) {
