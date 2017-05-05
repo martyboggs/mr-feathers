@@ -331,7 +331,7 @@ function initPhysics() {
 		move: true,
 		name: 'bird'
 	});
-	bird.position.y = 20;
+	bird.position.y = 3;
 	bodies.push(body);
 	body.connectMesh(bird);
 

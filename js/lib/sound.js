@@ -28,12 +28,6 @@ var sound = (function () {
 				}, false);
 			}
 
-			if (this.mediaPlaybackRequiresUserGesture()) {
-				window.addEventListener('keydown', this.removeBehaviorsRestrictions);
-				window.addEventListener('mousedown', this.removeBehaviorsRestrictions);
-				window.addEventListener('touchstart', this.removeBehaviorsRestrictions);
-			}
-
 			// start loop
 			this.load_next(this.keys[index]);
 		},
@@ -44,8 +38,8 @@ var sound = (function () {
 			return video.paused;
 		},
 		removeBehaviorsRestrictions() {
-			for (var name in this.sounds) {
-				this.sounds[name].load();
+			for (var name in sounds) {
+				sounds[name].audio.load();
 			}
 			window.removeEventListener('keydown', this.removeBehaviorsRestrictions);
 			window.removeEventListener('mousedown', this.removeBehaviorsRestrictions);
@@ -56,6 +50,11 @@ var sound = (function () {
 				console.log(index, this.keys[index]);
 				sounds[name].audio.src = 'sounds/'+ name +'.wav';
 			} else {
+				if (this.mediaPlaybackRequiresUserGesture()) {
+					window.addEventListener('keydown', this.removeBehaviorsRestrictions);
+					window.addEventListener('mousedown', this.removeBehaviorsRestrictions);
+					window.addEventListener('touchstart', this.removeBehaviorsRestrictions);
+				}
 				callback();
 			}
 		},
