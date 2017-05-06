@@ -47,6 +47,7 @@ var sound = (function () {
 			window.removeEventListener('touchstart', this.removeBehaviorsRestrictions);
 		},
 		load_next: function (name) {
+			console.log('load next', index);
 			if (index < this.keys.length) {
 				console.log(index, this.keys[index]);
 				sounds[name].audio.src = 'sounds/'+ name +'.wav';
