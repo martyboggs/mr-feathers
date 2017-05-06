@@ -36,7 +36,7 @@ function FlexboxMobileButtons(args) {
 
 	function buttonOnClick(e) {
 		if (e.type === 'touchstart') {
-			if (isButton(e.touches[0].target)) e.preventDefault();
+			// if (isButton(e.touches[0].target)) e.preventDefault();
 			for (var i = 0; i < e.touches.length; i += 1) {
 				if (isButton(e.touches[i].target)) {
 					self.clicking[e.touches[i].target.value] = true;
@@ -61,7 +61,6 @@ function FlexboxMobileButtons(args) {
 					self.args.offclick(e.changedTouches[i].target.value);
 				}
 			}
-			e.touches
 		} else {
 			document.removeEventListener('mouseup', buttonOffClick);
 			document.removeEventListener('mouseout', buttonOffClick);
