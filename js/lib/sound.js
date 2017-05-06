@@ -8,8 +8,8 @@ var sound = (function () {
 	sound = {
 		init: function () {
 			sounds = {
-				drag: {type: 'loop'},
-				flap: {type: 'loop'},
+				drag: {type: 'once'}, // loop
+				flap: {type: 'once'}, // loop
 				crash: {type: 'once'}, // overlap
 				powerup: {type: 'once'},
 				rod: {type: 'once'}, // overlap
@@ -40,7 +40,7 @@ var sound = (function () {
 				sounds[name].audio.src = 'sounds/'+ name +'.wav';
 				sounds[name].audio.load();
 			}
-
+console.log(this.init);
 			window.removeEventListener('keydown', this.init);
 			window.removeEventListener('mousedown', this.init);
 			window.removeEventListener('touchstart', this.init);
