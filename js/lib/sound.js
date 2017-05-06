@@ -44,6 +44,7 @@ var sound = (function () {
 			window.removeEventListener('keydown', this.init);
 			window.removeEventListener('mousedown', this.init);
 			window.removeEventListener('touchstart', this.init);
+			console.log('init listeners removed');
 		},
 		// mediaPlaybackRequiresUserGesture() {
 		// 	// test if play() is ignored when not called from an input event handler
