@@ -40,7 +40,8 @@ var sound = (function () {
 			}
 			for (var name in sounds) {
 				sounds[name].audio.src = 'sounds/'+ name +'.wav';
-				sounds[name].audio.load();
+				sounds[name].audio.play();
+				sounds[name].audio.pause();
 			}
 console.log('nonsenseStopped');
 			stopThisNonsense = true;
