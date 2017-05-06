@@ -1517,6 +1517,7 @@ var soundElements = document.getElementsByTagName('audio');
 var sounds = {};
 var stopThisNonsense = false;
 function initSounds(e) {
+	console.log(e);
 	// callback = Callback || function () {};
 	// this.keys = Object.keys(sounds);
 	// if (!this.keys.length) return;
