@@ -38,6 +38,7 @@ var sound = (function () {
 			}
 			for (var name in sounds) {
 				sounds[name].audio.src = 'sounds/'+ name +'.wav';
+				sounds[name].audio.load();
 			}
 
 			window.removeEventListener('keydown', this.init);
