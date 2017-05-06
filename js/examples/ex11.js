@@ -493,7 +493,7 @@ Store.prototype = {
 					gui.add(products[key].key, products[key].value);
 				}
 			}
-			sounds.rod.audio.play();
+			sounds.rod.play();
 		} else if (e.target.className.indexOf('close') !== -1) {
 			// this.close();
 			document.removeEventListener('click', this.storeHandler);
@@ -519,7 +519,7 @@ function Messages(target) {
 }
 Messages.prototype = {
 	add: function (message, icon) {
-		sounds.blip.audio.play();
+		sounds.blip.play();
 		var m = document.createElement('div');
 		m.className = 'message';
 		m.innerHTML =
@@ -561,7 +561,7 @@ Messages.prototype = {
 			} else {
 				messages.challenge = {status: 'none'};
 			}
-			sounds.blip.audio.play();
+			sounds.blip.play();
 			messages.container.removeChild(document.getElementById('challenge-button').parentNode);
 		});
 		return m;
@@ -755,7 +755,7 @@ EasyGui.prototype = {
 		var challenge = messages.challenge;
 		if ((frame - challenge.last) % challenge.next === 0) { // challenges, random times
 			if (challenge.status === 'none') {
-				sounds.powerup.audio.play();
+				sounds.powerup.play();
 				messages.addButton('Diablo Power Station is putting us out of business! Steal more of their fuel rods and we\'ll give you a reward!', 'challenge', function () {
 					if (Math.random() < 0.95) {
 						messages.addChallenge('Challenge', 'challenge', 'rods', Math.pow(gui.level, 2) + 200);
@@ -862,10 +862,10 @@ function render(timestamp) {
 	bird.userData.lastY = bird.position.y;
 
 	if (keyboard.pressed('j') || fmb.clicking.J || daydreamState.isClickDown) {
-		if (!isPlaying('flap')) sounds.flap.audio.play('flap');
+		if (!isPlaying('flap')) sounds.flap.play('flap');
 		birdAction = FLAPPING;
 	} else {
-		if (isPlaying('flap')) sounds.flap.audio.pause();
+		if (isPlaying('flap')) sounds.flap.pause();
 		if (birdAction === FLAPPING) birdAction = HOVER;
 	}
 
@@ -1003,7 +1003,7 @@ function render(timestamp) {
 
 			// tapping
 			if (!tree && !gui.holding) { // prevent tapping if holding or nesting
-				sounds.rod.audio.play();
+				sounds.rod.play();
 				gui.add('rods', 1);
 
 				var rod = new THREE.Mesh(rodGeom, rodMat);
@@ -1105,15 +1105,15 @@ function render(timestamp) {
 
 	var birdCollide = world.checkContact('bird', 'ground');
 	if (birdCollide && bodies[0].linearVelocity.lengthSq() > 5) {
-		sounds.drag.audio.play();
+		sounds.drag.play();
 	} else {
 		if (isPlaying('drag')) {
-			sounds.drag.audio.pause();
+			sounds.drag.pause();
 		}
 	}
 
 	if (hardCollision('table')) {
-		sounds.crash.audio.play();
+		sounds.crash.play();
 	// } else if (softCollision('table')) {
 	// 	sound.play('crash');
 	}
@@ -1504,51 +1504,28 @@ function mediaPlaybackRequiresUserGesture() {
 	return video.paused;
 }
 
-var sounds = {
-	drag: {type: 'once'}, // loop
-	flap: {type: 'once'}, // loop
-	crash: {type: 'once'}, // overlap
-	powerup: {type: 'once'},
-	rod: {type: 'once'}, // overlap
-	blip: {type: 'once'}
-};
-
 function isPlaying(name) {
 	if (sounds[name]) {
-		if (sounds[name].audio) return !sounds[name].audio.paused || sounds[name].audio.currentTime;
+		if (sounds[name]) return !sounds[name].paused || sounds[name].currentTime;
 		else return false;
 	} else {
 		return false;
 	}
 }
 
+var soundElements = document.getElementsByTagName('audio');
+var sounds = {};
 var stopThisNonsense = false;
 function initSounds(e) {
 	// callback = Callback || function () {};
 	// this.keys = Object.keys(sounds);
 	// if (!this.keys.length) return;
 	if (stopThisNonsense) return;
-	for (var name in sounds) {
-		var audio = document.createElement('audio');
-		sounds[name].audio = audio;
-		audio.style.display = 'none';
-		audio.autoplay = false;
-		if (sounds[name].type === 'loop') {
-			audio.loop = true;
-		}
-		sounds[name].lastFrame = false;
-		// var self = this;
-		// function loadedData() {
-		// 	sounds[name].audio.removeEventListener('loadeddata', loadedData);
-		// 	// index += 1;
-		// 	// self.load_next(self.keys[index]);
-		// }
-		// audio.addEventListener('loadeddata', loadedData);
-	}
-	for (var name in sounds) {
-		sounds[name].audio.src = 'sounds/'+ name +'.wav';
-		sounds[name].audio.play();
-		sounds[name].audio.pause();
+	for (var i = 0; i < soundElements.length; i += 1) {
+		var name = soundElements[i].className;
+		sounds[name] = soundElements[i];
+		sounds[name].play();
+		sounds[name].pause();
 	}
 	console.log('nonsenseStopped');
 	stopThisNonsense = true;
