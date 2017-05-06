@@ -1499,9 +1499,9 @@ new Reactor([80, 40, 250 - 2.5]);
 sound.init({
 	drag: {type: 'loop'},
 	flap: {type: 'loop'},
-	crash: {type: 'overlap'},
+	crash: {type: 'once'}, // overlap
 	powerup: {type: 'once'},
-	rod: {type: 'overlap'},
+	rod: {type: 'once'}, // overlap
 	blip: {type: 'once'}
 });
 if (!effect) render();

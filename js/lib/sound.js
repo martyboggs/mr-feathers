@@ -40,14 +40,10 @@ var sound = (function () {
 		removeBehaviorsRestrictions() {
 			for (var name in sounds) {
 				sounds[name].audio.load();
-				sounds[name].audio.play();
-				sounds[name].audio.pause();
 			}
-			console.log('sounds reloaded');
 			window.removeEventListener('keydown', this.removeBehaviorsRestrictions);
 			window.removeEventListener('mousedown', this.removeBehaviorsRestrictions);
 			window.removeEventListener('touchstart', this.removeBehaviorsRestrictions);
-			console.log('listener removed');
 		},
 		load_next: function (name) {
 			if (index < this.keys.length) {
