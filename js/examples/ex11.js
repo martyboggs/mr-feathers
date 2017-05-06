@@ -1522,12 +1522,12 @@ function isPlaying(name) {
 	}
 }
 
-var nonsenseStopped = false;
+var stopThisNonsense = false;
 function initSounds(e) {
 	// callback = Callback || function () {};
 	// this.keys = Object.keys(sounds);
 	// if (!this.keys.length) return;
-	if (nonsenseStopped) return;
+	if (stopThisNonsense) return;
 	for (var name in sounds) {
 		var audio = document.createElement('audio');
 		sounds[name].audio = audio;
