@@ -1517,7 +1517,6 @@ var soundElements = document.getElementsByTagName('audio');
 var sounds = {};
 var stopThisNonsense = false;
 function initSounds(e) {
-	console.log(e);
 	// callback = Callback || function () {};
 	// this.keys = Object.keys(sounds);
 	// if (!this.keys.length) return;
@@ -1525,20 +1524,21 @@ function initSounds(e) {
 	for (var i = 0; i < soundElements.length; i += 1) {
 		var name = soundElements[i].className;
 		sounds[name] = soundElements[i];
-		sounds[name].play();
-		sounds[name].pause();
+		sounds[name].load();
+		// sounds[name].play();
+		// sounds[name].pause();
 	}
 	console.log('nonsenseStopped');
 	stopThisNonsense = true;
 }
 
-if (mediaPlaybackRequiresUserGesture()) {
+// if (mediaPlaybackRequiresUserGesture()) {
 	window.addEventListener('keydown', initSounds);
 	window.addEventListener('mousedown', initSounds);
 	window.addEventListener('touchstart', initSounds);
-} else {
-	initSounds();
-}
+// } else {
+// 	initSounds();
+// }
 
 if (!effect) render();
 
