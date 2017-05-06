@@ -862,7 +862,7 @@ function render(timestamp) {
 	bird.userData.lastY = bird.position.y;
 
 	if (keyboard.pressed('j') || fmb.clicking.J || daydreamState.isClickDown) {
-		sound.play('flap');
+		if (!sound.isPlaying('flap')) sound.play('flap');
 		birdAction = FLAPPING;
 	} else {
 		if (sound.isPlaying('flap')) sound.stop('flap');
