@@ -5,8 +5,10 @@ var sound = (function () {
 	var playing = {};
 	var index = 0;
 	var sounds = {};
+	var stopThisNonsense = false;
 	sound = {
 		init: function () {
+			if (stopThisNonsense) return;
 			sounds = {
 				drag: {type: 'once'}, // loop
 				flap: {type: 'once'}, // loop
@@ -40,11 +42,8 @@ var sound = (function () {
 				sounds[name].audio.src = 'sounds/'+ name +'.wav';
 				sounds[name].audio.load();
 			}
-console.log(this.init);
-			window.removeEventListener('keydown', this.init);
-			window.removeEventListener('mousedown', this.init);
-			window.removeEventListener('touchstart', this.init);
-			console.log('init listeners removed');
+console.log('nonsenseStopped');
+			stopThisNonsense = true;
 		},
 		// mediaPlaybackRequiresUserGesture() {
 		// 	// test if play() is ignored when not called from an input event handler
