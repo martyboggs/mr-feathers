@@ -41,6 +41,7 @@ var sound = (function () {
 			for (var name in sounds) {
 				sounds[name].audio.load();
 			}
+			console.log('removelisteners');
 			window.removeEventListener('keydown', this.removeBehaviorsRestrictions);
 			window.removeEventListener('mousedown', this.removeBehaviorsRestrictions);
 			window.removeEventListener('touchstart', this.removeBehaviorsRestrictions);
