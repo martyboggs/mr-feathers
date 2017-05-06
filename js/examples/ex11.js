@@ -380,8 +380,8 @@ function initPhysics() {
 		{pos: [-90, 100 / 2, 250 - 30 / 2], size: [20, 100, 30], color: darkerGray}, // pillar
 		{pos: [-40, 20 / 2, 100 + 20/2], size: [60, 20, 20], color: white}, // lab table1
 		{pos: [-40, 20 + 5 / 2, 100 + 20/2 + 3], size: [63, 5, 23], color: darkerGray}, // lab table1top
-		{pos: [-250 + 40 / 2, 30 / 2, 100 + 150 / 2], size: [40, 30, 150], color: white}, // far lab table
-		{pos: [-250 + 43 / 2, 30 + 5 / 2, 100 + 150 / 2], size: [43, 5, 150], color: darkerGray}, // far lab tabletop
+		// {pos: [-250 + 40 / 2, 30 / 2, 100 + 150 / 2], size: [40, 30, 150], color: white}, // far lab table
+		// {pos: [-250 + 43 / 2, 30 + 5 / 2, 100 + 150 / 2], size: [43, 5, 150], color: darkerGray}, // far lab tabletop
 
 
 		{pos: [stockpilePos[0] + 10, 5, stockpilePos[1]], size: [2, 10, 22], color: black}, // stockpile
@@ -862,10 +862,10 @@ function render(timestamp) {
 	bird.userData.lastY = bird.position.y;
 
 	if (keyboard.pressed('j') || fmb.clicking.J || daydreamState.isClickDown) {
-		if (!isPlaying('flap')) sounds.flap.play('flap');
+		if (!sounds.flap.playing()) sounds.flap.play();
 		birdAction = FLAPPING;
 	} else {
-		if (isPlaying('flap')) sounds.flap.pause();
+		sounds.flap.stop();
 		if (birdAction === FLAPPING) birdAction = HOVER;
 	}
 
@@ -1105,11 +1105,9 @@ function render(timestamp) {
 
 	var birdCollide = world.checkContact('bird', 'ground');
 	if (birdCollide && bodies[0].linearVelocity.lengthSq() > 5) {
-		sounds.drag.play();
+		if (!sounds.drag.playing()) sounds.drag.play();
 	} else {
-		if (isPlaying('drag')) {
-			sounds.drag.pause();
-		}
+		sounds.drag.stop();
 	}
 
 	if (hardCollision('table')) {
@@ -1502,15 +1500,6 @@ function mediaPlaybackRequiresUserGesture() {
 	video.play();
 	console.log(video.paused);
 	return video.paused;
-}
-
-function isPlaying(name) {
-	if (sounds[name]) {
-		if (sounds[name]) return !sounds[name].paused || sounds[name].currentTime;
-		else return false;
-	} else {
-		return false;
-	}
 }
 
 var soundElements = document.getElementsByTagName('audio');
