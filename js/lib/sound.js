@@ -52,6 +52,7 @@ var sound = (function () {
 				sounds[name].audio.src = 'sounds/'+ name +'.wav';
 			} else {
 				if (this.mediaPlaybackRequiresUserGesture()) {
+					console.log('addlisteners');
 					window.addEventListener('keydown', this.removeBehaviorsRestrictions);
 					window.addEventListener('mousedown', this.removeBehaviorsRestrictions);
 					window.addEventListener('touchstart', this.removeBehaviorsRestrictions);
