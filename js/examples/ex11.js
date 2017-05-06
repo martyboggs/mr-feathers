@@ -1496,14 +1496,21 @@ initPhysics();
 new Reactor([0, 40, 250 - 2.5]);
 new Reactor([80, 40, 250 - 2.5]);
 
-sound.init({
-	drag: {type: 'loop'},
-	flap: {type: 'loop'},
-	crash: {type: 'once'}, // overlap
-	powerup: {type: 'once'},
-	rod: {type: 'once'}, // overlap
-	blip: {type: 'once'}
-});
+function mediaPlaybackRequiresUserGesture() {
+	// test if play() is ignored when not called from an input event handler
+	var video = document.createElement('video');
+	video.play();
+	return video.paused;
+}
+
+if (mediaPlaybackRequiresUserGesture()) {
+	window.addEventListener('keydown', sound.init);
+	window.addEventListener('mousedown', sound.init);
+	window.addEventListener('touchstart', sound.init);
+} else {
+	sound.init();
+}
+
 if (!effect) render();
 
 /*

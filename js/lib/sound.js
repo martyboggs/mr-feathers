@@ -6,9 +6,16 @@ var sound = (function () {
 	var index = 0;
 	var sounds = {};
 	sound = {
-		init: function (Sounds, Callback) {
-			sounds = Sounds;
-			callback = Callback || function () {};
+		init: function () {
+			sounds = {
+				drag: {type: 'loop'},
+				flap: {type: 'loop'},
+				crash: {type: 'once'}, // overlap
+				powerup: {type: 'once'},
+				rod: {type: 'once'}, // overlap
+				blip: {type: 'once'}
+			};
+			// callback = Callback || function () {};
 			this.keys = Object.keys(sounds);
 			if (!this.keys.length) return;
 
@@ -22,23 +29,27 @@ var sound = (function () {
 				}
 				sounds[name].lastFrame = false;
 				var self = this;
-				function loadedData() {
-					sounds[name].audio.removeEventListener('loadeddata', loadedData);
-					index += 1;
-					self.load_next(self.keys[index]);
-				}
-				audio.addEventListener('loadeddata', loadedData);
+				// function loadedData() {
+				// 	sounds[name].audio.removeEventListener('loadeddata', loadedData);
+				// 	// index += 1;
+				// 	// self.load_next(self.keys[index]);
+				// }
+				// audio.addEventListener('loadeddata', loadedData);
+			}
+			for (var name in sounds) {
+				sounds[name].audio.src = 'sounds/'+ name +'.wav';
 			}
 
-			// start loop
-			this.load_next(this.keys[index]);
+			window.removeEventListener('keydown', this.init);
+			window.removeEventListener('mousedown', this.init);
+			window.removeEventListener('touchstart', this.init);
 		},
-		mediaPlaybackRequiresUserGesture() {
-			// test if play() is ignored when not called from an input event handler
-			var video = document.createElement('video');
-			video.play();
-			return video.paused;
-		},
+		// mediaPlaybackRequiresUserGesture() {
+		// 	// test if play() is ignored when not called from an input event handler
+		// 	var video = document.createElement('video');
+		// 	video.play();
+		// 	return video.paused;
+		// },
 		removeBehaviorsRestrictions() {
 			for (var name in sounds) {
 				sounds[name].audio.load();
@@ -48,19 +59,15 @@ var sound = (function () {
 			window.removeEventListener('mousedown', this.removeBehaviorsRestrictions);
 			window.removeEventListener('touchstart', this.removeBehaviorsRestrictions);
 		},
-		load_next: function (name) {
-			if (index < this.keys.length) {
-				sounds[name].audio.src = 'sounds/'+ name +'.wav';
-			} else if (index === this.keys.length) {
-				if (this.mediaPlaybackRequiresUserGesture()) {
-					console.log('addlisteners');
-					window.addEventListener('keydown', this.removeBehaviorsRestrictions);
-					window.addEventListener('mousedown', this.removeBehaviorsRestrictions);
-					window.addEventListener('touchstart', this.removeBehaviorsRestrictions);
-				}
-				callback();
-			}
-		},
+		// load_next: function (name) {
+		// 	if (index < this.keys.length) {
+		// 	} else if (index === this.keys.length) {
+		// 		if (this.mediaPlaybackRequiresUserGesture()) {
+		// 			console.log('addlisteners');
+		// 		}
+		// 		// callback();
+		// 	}
+		// },
 		play: function (name) {
 			if (sounds[name] && sounds[name].audio) {
 				if (sounds[name].type === 'overlap') {
