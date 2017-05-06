@@ -50,15 +50,15 @@ var sound = (function () {
 		// 	video.play();
 		// 	return video.paused;
 		// },
-		removeBehaviorsRestrictions() {
-			for (var name in sounds) {
-				sounds[name].audio.load();
-			}
-			console.log('removelisteners');
-			window.removeEventListener('keydown', this.removeBehaviorsRestrictions);
-			window.removeEventListener('mousedown', this.removeBehaviorsRestrictions);
-			window.removeEventListener('touchstart', this.removeBehaviorsRestrictions);
-		},
+		// removeBehaviorsRestrictions() {
+		// 	for (var name in sounds) {
+		// 		sounds[name].audio.load();
+		// 	}
+		// 	console.log('removelisteners');
+		// 	window.removeEventListener('keydown', this.removeBehaviorsRestrictions);
+		// 	window.removeEventListener('mousedown', this.removeBehaviorsRestrictions);
+		// 	window.removeEventListener('touchstart', this.removeBehaviorsRestrictions);
+		// },
 		// load_next: function (name) {
 		// 	if (index < this.keys.length) {
 		// 	} else if (index === this.keys.length) {
