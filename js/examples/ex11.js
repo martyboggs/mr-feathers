@@ -1514,42 +1514,14 @@ function isPlaying(name) {
 }
 
 var soundElements = document.getElementsByTagName('audio');
-var sounds = {};
-var stopThisNonsense = false;
-function initSounds(e) {
-	// callback = Callback || function () {};
-	// this.keys = Object.keys(sounds);
-	// if (!this.keys.length) return;
-	if (stopThisNonsense) return;
-	for (var i = 0; i < soundElements.length; i += 1) {
-		var name = soundElements[i].className;
-		sounds[name] = soundElements[i];
-		sounds[name].load();
-		// sounds[name].play();
-		// sounds[name].pause();
-	}
-	console.log('nonsenseStopped');
-	stopThisNonsense = true;
-}
+var sounds = {
+	blip: new Howl({src: ['sounds/blip.wav']}),
+	flap: new Howl({src: ['sounds/flap.wav']}),
+	drag: new Howl({src: ['sounds/drag.wav']}),
+	rod: new Howl({src: ['sounds/rod.wav']}),
+	crash: new Howl({src: ['sounds/crash.wav']}),
 
-if (mediaPlaybackRequiresUserGesture()) {
-	// window.addEventListener('keydown', initSounds);
-	// window.addEventListener('mousedown', initSounds);
-	window.addEventListener('touchstart', function (e) {
-		if (stopThisNonsense) return;
-		for (var i = 0; i < soundElements.length; i += 1) {
-			var name = soundElements[i].className;
-			sounds[name] = soundElements[i];
-			sounds[name].load();
-			// sounds[name].play();
-			// sounds[name].pause();
-		}
-		console.log('nonsenseStopped');
-		stopThisNonsense = true;
-	});
-} else {
-	initSounds();
-}
+};
 
 if (!effect) render();
 
