@@ -1509,8 +1509,9 @@ var sounds = {
 	drag: new Howl({src: ['sounds/drag.wav']}),
 	rod: new Howl({src: ['sounds/rod.wav']}),
 	crash: new Howl({src: ['sounds/crash.wav']}),
-
+	music: new Howl({src: ['sounds/diviine.wav']})
 };
+sounds.music.play();
 
 if (!effect) render();
 
