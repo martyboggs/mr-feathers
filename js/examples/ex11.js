@@ -1532,13 +1532,24 @@ function initSounds(e) {
 	stopThisNonsense = true;
 }
 
-// if (mediaPlaybackRequiresUserGesture()) {
-	window.addEventListener('keydown', initSounds);
-	window.addEventListener('mousedown', initSounds);
-	window.addEventListener('touchstart', initSounds);
-// } else {
-// 	initSounds();
-// }
+if (mediaPlaybackRequiresUserGesture()) {
+	// window.addEventListener('keydown', initSounds);
+	// window.addEventListener('mousedown', initSounds);
+	window.addEventListener('touchstart', function (e) {
+		if (stopThisNonsense) return;
+		for (var i = 0; i < soundElements.length; i += 1) {
+			var name = soundElements[i].className;
+			sounds[name] = soundElements[i];
+			sounds[name].load();
+			// sounds[name].play();
+			// sounds[name].pause();
+		}
+		console.log('nonsenseStopped');
+		stopThisNonsense = true;
+	});
+} else {
+	initSounds();
+}
 
 if (!effect) render();
 
