@@ -22,10 +22,12 @@ var sound = (function () {
 				}
 				sounds[name].lastFrame = false;
 				var self = this;
-				audio.addEventListener('loadeddata', function () {
+				function loadedData() {
+					sounds[name].audio.removeEventListener('loadeddata', loadedData);
 					index += 1;
 					self.load_next(self.keys[index]);
-				}, false);
+				}
+				audio.addEventListener('loadeddata', loadedData);
 			}
 
 			// start loop
@@ -47,11 +49,9 @@ var sound = (function () {
 			window.removeEventListener('touchstart', this.removeBehaviorsRestrictions);
 		},
 		load_next: function (name) {
-			console.log('load next', index);
 			if (index < this.keys.length) {
-				console.log(index, this.keys[index]);
 				sounds[name].audio.src = 'sounds/'+ name +'.wav';
-			} else {
+			} else if (index === this.keys.length) {
 				if (this.mediaPlaybackRequiresUserGesture()) {
 					console.log('addlisteners');
 					window.addEventListener('keydown', this.removeBehaviorsRestrictions);
