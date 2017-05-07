@@ -1193,10 +1193,10 @@ dl dd {
 }
 
 .store .close {
-	position: sticky;
-	bottom: 0;
-	left: 0;
-	width: 100%;
+	position: fixed;
+	bottom: 10px;
+	left: 39%;
+	width: 20%;
 	height: 50px;
 	z-index: 2147483647;
 }

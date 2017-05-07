@@ -460,7 +460,7 @@ function Store(target) {
 		item += '</div>';
 		storeDiv.innerHTML += item;
 	}
-	storeDiv.innerHTML += '<button class="close" value="close">close</button>'
+	storeDiv.innerHTML += '<button class="close" value="close" id="close">close</button>'
 	this.target.appendChild(storeDiv);
 	this.wrapper = this.storeHandler.bind(this);
 	document.addEventListener('click', this.wrapper);
