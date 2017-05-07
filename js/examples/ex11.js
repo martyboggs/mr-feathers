@@ -1504,12 +1504,13 @@ function mediaPlaybackRequiresUserGesture() {
 
 var soundElements = document.getElementsByTagName('audio');
 var sounds = {
-	blip: new Howl({src: ['sounds/blip.wav']}),
+	blip: new Howl({src: ['sounds/good1.wav']}),
 	flap: new Howl({src: ['sounds/flap.wav']}),
 	drag: new Howl({src: ['sounds/drag.wav']}),
 	rod: new Howl({src: ['sounds/rod.wav']}),
 	crash: new Howl({src: ['sounds/crash.wav']}),
-	music: new Howl({src: ['sounds/diviine.wav']})
+	powerup: new Howl({src: ['sounds/good3.wav']}),
+	music: new Howl({src: ['sounds/diviine.wav']}),
 };
 sounds.music.play();
 
