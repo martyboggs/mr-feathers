@@ -402,7 +402,7 @@ function Store(target) {
 	var storeDiv = document.createElement('div');
 	storeDiv.className = storeDiv.id = 'store';
 	storeDiv.innerHTML = '';
-	var products = {
+	this.products = {
 		beak1: {description: 'Increase the number of rods you can carry to ',
 			key: 'rodLimit', value: 3, seconds: 5,
 			rods: 200, eggs: 1, level: 1},
@@ -440,28 +440,30 @@ function Store(target) {
 		tree1: {description: 'Increase trees by ', key: 'tree', value: 1,
 			rods: 1000, eggs: 10, level: 1, },
 	};
-	for (var key in products) {
+
+	for (var key in this.products) {
 		// purchased already, or level not met
-		var locked = products[key].level > gui.level;
+		var locked = this.products[key].level > gui.level;
 		var purchased = gui.purchased[key];
 		var disabled = locked || purchased ? 'disabled="disabled"' : '';
 		var item = '<div class="item' + (locked || purchased ? ' disabled' : '') + '">';
-		item += products[key].description + products[key].value + '<br>';
+		item += this.products[key].description + this.products[key].value + '<br>';
 		if (locked) {
-			item += 'Unlocked at level ' + products[key].level + '<br>';
+			item += 'Unlocked at level ' + this.products[key].level + '<br>';
 		} else if (purchased) {
 			item += 'sold out<br>';
 		}
-		if (products[key].rods)
-			item += '<button class="item-button rods" value="' + key + '" ' + disabled + '>' + products[key].rods + ' rods<span class="price">' + '</span></button>';
-		if (products[key].eggs)
-			item += '<button class="item-button eggs" value="' + key + '" ' + disabled + '>' + products[key].eggs + ' eggs<span class="price">' + '</span></button>';
+		if (this.products[key].rods)
+			item += '<button class="item-button rods" value="' + key + '" ' + disabled + '>' + this.products[key].rods + ' rods<span class="price">' + '</span></button>';
+		if (this.products[key].eggs)
+			item += '<button class="item-button eggs" value="' + key + '" ' + disabled + '>' + this.products[key].eggs + ' eggs<span class="price">' + '</span></button>';
 		item += '</div>';
 		storeDiv.innerHTML += item;
 	}
 	storeDiv.innerHTML += '<button class="close" value="close">close</button>'
 	this.target.appendChild(storeDiv);
-	document.addEventListener('click', this.storeHandler);
+	this.wrapper = this.storeHandler.bind(this);
+	document.addEventListener('click', this.wrapper);
 }
 Store.prototype = {
 	storeHandler: function (e) {
@@ -469,8 +471,8 @@ Store.prototype = {
 		if (item && e.target.className.indexOf('item-button') !== -1) {
 			var unit = e.target.className.indexOf('rods') !== -1 ? 'rods' : 'eggs';
 			var key = e.target.value;
-			if (confirm('Buy ' + key + ' upgrade for ' + products[key].rods + ' rods?')) {
-				if (products[key][unit] > gui[unit]) {
+			if (confirm('Buy ' + key + ' upgrade for ' + this.products[key][unit] + ' ' + unit + '?')) {
+				if (this.products[key][unit] > gui[unit]) {
 					alert('Not enough ' + unit);
 					return;
 				}
@@ -481,28 +483,28 @@ Store.prototype = {
 					if (item.children[1]) item.children[1].disabled = 'disabled';
 					if (item.children[2]) item.children[2].disabled = 'disabled';
 				}
-				gui.purchased[key] = Object.assign({}, products[key]);
+				gui.purchased[key] = Object.assign({}, this.products[key]);
 				gui.purchased[key].unit = unit;
-				if (unit === 'rods') gui.lastRods -= products[key].rods;
+				if (unit === 'rods') gui.lastRods -= this.products[key].rods;
 
-				gui.add(unit, -products[key][unit]);
+				gui.add(unit, -this.products[key][unit]);
 				if (gui.purchased[key].seconds) {
 					gui.purchased[key].boughtTime = new Date().getTime();
 					gui.addXp(1); // force save
 				} else {
-					gui.add(products[key].key, products[key].value);
+					gui.add(this.products[key].key, this.products[key].value);
 				}
 			}
 			sounds.rod.play();
 		} else if (e.target.className.indexOf('close') !== -1) {
 			// this.close();
-			document.removeEventListener('click', this.storeHandler);
+			document.removeEventListener('click', this.wrapper);
 			canvasParent.removeChild(document.getElementById('store'));
 			store = null;
 		}
 	},
 	close: function () {
-		document.removeEventListener('click', this.storeHandler);
+		document.removeEventListener('click', this.wrapper);
 		this.target.removeChild(document.getElementById('store'));
 		store = null;
 	}
